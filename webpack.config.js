@@ -44,6 +44,9 @@ const webpackConfig = {
                 importLoaders: 1,
                 modules: true
               }
+            },
+            {
+              loader: 'sass-loader'
             }
           ]
         })
