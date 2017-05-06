@@ -42,7 +42,23 @@ const webpackConfig = {
               loader: 'css-loader',
               options: {
                 importLoaders: 1,
-                modules: true
+                modules: true,
+                getLocalIdent: (context, localIdentName, localName, options) => {
+                  if(!options.context) {
+		                options.context = context.options && typeof context.options.context === "string" ? context.options.context : context.context;
+                  }
+
+                  let request = path.relative(path.join(__dirname, "src"), context.resourcePath);
+
+                  request = request.replace(/\.[^/.]+$/, "");
+                  request = request.replace(/\/index$/, "");
+                  request = request.replace(/\//g, "_");
+                  request = request.replace(/[^a-z0-9-_]/gi, "");
+
+                  // [path]_[className]
+                  // i.e. components_App_container
+                  return `${request}_${localName}`;
+                }
               }
             },
             {
