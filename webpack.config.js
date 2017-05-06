@@ -73,10 +73,8 @@ const webpackConfig = {
   ]
 };
 
-if (!watchMode) {
-  if (production) {
-    webpackConfig.plugins.push(new UglifyJSPlugin());
-  }
+if (!watchMode && production) {
+  webpackConfig.plugins.push(new UglifyJSPlugin());
 }
 
 module.exports = webpackConfig;
