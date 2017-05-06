@@ -1,10 +1,10 @@
 :global {
-  @import 'sass/_base';
+  @import '_base';
 }
 
 body {
-  background: black;
-  color: white;
+  background: $background;
+  color: $color;
 }
 
 .app {

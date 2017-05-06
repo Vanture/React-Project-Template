@@ -62,7 +62,13 @@ const webpackConfig = {
               }
             },
             {
-              loader: 'sass-loader'
+              loader: 'sass-loader',
+              options: {
+                data: '@import "_variables";',
+                includePaths: [
+                  path.resolve(__dirname, 'src/sass')
+                ]
+              }
             }
           ]
         })
