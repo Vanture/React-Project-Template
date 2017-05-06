@@ -84,7 +84,10 @@ const webpackConfig = {
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development')
     }),
-    new HtmlWebpackPlugin({ title: 'My App' }),
+    new HtmlWebpackPlugin({
+      title: 'My App',
+      template: 'src/template.ejs'
+    }),
     new ExtractTextPlugin({
       filename: 'styles/main.css',
       allChunks: true

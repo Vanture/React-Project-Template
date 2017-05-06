@@ -2,10 +2,10 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './components/App';
 
-import './index.scss';
+import * as styles from './index.scss';
 
 const container = document.createElement('DIV');
-container.id = 'root';
+container.className = styles.app;
 
 document.body.appendChild(container);
 
