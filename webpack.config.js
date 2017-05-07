@@ -62,11 +62,16 @@ const webpackConfig = {
               }
             },
             {
+              loader: 'resolve-url-loader'
+            },
+            {
               loader: 'sass-loader',
               options: {
                 data: '@import "_variables";',
+                sourceMap: true,
                 includePaths: [
-                  path.resolve(__dirname, 'src/sass')
+                  path.resolve(__dirname, 'src/sass'),
+                  APP_DIR // Used for font imports
                 ]
               }
             }
