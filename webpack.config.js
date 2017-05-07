@@ -62,7 +62,10 @@ const webpackConfig = {
               }
             },
             {
-              loader: 'resolve-url-loader'
+              loader: 'resolve-url-loader',
+              options: {
+                root: APP_DIR
+              }
             },
             {
               loader: 'sass-loader',
@@ -70,8 +73,7 @@ const webpackConfig = {
                 data: '@import "_variables";',
                 sourceMap: true,
                 includePaths: [
-                  path.resolve(__dirname, 'src/sass'),
-                  APP_DIR // Used for font imports
+                  path.resolve(__dirname, 'src/sass')
                 ]
               }
             }
@@ -100,7 +102,7 @@ const webpackConfig = {
       template: 'src/template.ejs'
     }),
     new ExtractTextPlugin({
-      filename: 'styles/main.css',
+      filename: 'main.css',
       allChunks: true
     })
   ]
