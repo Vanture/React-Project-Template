@@ -62,19 +62,12 @@ const webpackConfig = {
               }
             },
             {
-              loader: 'resolve-url-loader',
+              loader: 'fast-sass-loader',
               options: {
-                root: APP_DIR
-              }
-            },
-            {
-              loader: 'sass-loader',
-              options: {
-                data: '@import "_variables";',
-                sourceMap: true,
                 includePaths: [
                   path.resolve(__dirname, 'src/sass')
-                ]
+                ],
+                data: '@import "_variables";'
               }
             }
           ]
