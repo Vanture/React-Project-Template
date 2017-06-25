@@ -1,6 +1,6 @@
 # My React Project Template
 
-This is my personla project template for React projects, which I often use as a base for further configuration. The stack includes webpack, SASS, fetch() and of course React
+This is my personal project template for React apps, which I often use as a base for further configuration. The stack includes Webpack 3, Babel, SASS, fetch() and, of course, React.
 
 The template comes with a few common scripts I use, which I run with `npm run`.
 
