@@ -90,7 +90,7 @@ module.exports = (env = {}) => {
     ]
   };
 
-  if (production) {
+  if (isProd) {
     config.plugins.push(
       new webpack.optimize.UglifyJsPlugin({
         mangle: true,
