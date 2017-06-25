@@ -9,8 +9,10 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const BUILD_DIR = path.resolve(__dirname, 'build');
 const APP_DIR = path.resolve(__dirname, 'src');
 
-module.exports = ({ production, publicPath = '/'}) => {
-  const isProd = production === true;
+module.exports = (env = {}) => {
+  const isProd = env.production === true;
+  
+  const publicPath = env.publicPath || '/';
   const publicUrl = publicPath.slice(0, -1);
 
   const config = {
@@ -106,7 +108,7 @@ module.exports = ({ production, publicPath = '/'}) => {
           /\.min\.js$/gi // Skip pre-minified libs
         ]
       }),
-      new webpack.optimize.OccurrenceOrderPlugin(),
+      new webpack.optimize.OccurrenceOrderPlugin()
     );
   }
 
