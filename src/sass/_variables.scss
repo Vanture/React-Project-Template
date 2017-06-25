@@ -1,2 +1,73 @@
-$background: #000;
-$color: #fff;
+// Font sizes
+$size-1: 2.125rem;
+$size-2: 1.75rem;
+$size-3: 1.5rem;
+$size-4: 1.25rem;
+$size-5: 1.1875rem;
+$size-6: 1rem;
+$size-body: 16px;
+
+// Font weights
+$weight-bold: 700;
+$weight-medium: 600;
+$weight-normal: 400;
+$weight-light: 300;
+
+// Line heights
+$lh-1: 2.75rem;
+$lh-2: 2.125rem;
+$lh-3: 1.875rem;
+$lh-4: 1.4375rem;
+$lh-5: 1.25rem;
+$lh-6: 1.0625rem;
+
+$lh-default: 1.5rem;
+$lh-condensed: 1.25rem;
+$lh-body: $lh-default;
+
+$font-body: sans-serif;
+$font-title: sans-serif;
+$font-mono: Consolas, 'Liberation Mono', Menlo, Courier, monospace;
+
+// Colors
+$primary: #303060;
+$primary-light: #604878;
+$primary-dark: #301848;
+
+$secondary: #c06060;
+$secondary-light: #ffd8d8;
+$secondary-dark: #d86048;
+
+$success: #51cf66;
+$success-light: #69db7c;
+$success-dark: #40c057;
+
+$warn: #f0a860;
+$warn-light: #f0c090;
+$warn-dark: darken($warn, 5%);
+
+$gray: #9db2cd;
+$gray-light: #c6d4ff;
+$gray-dark: #205081;
+
+$white: #fff;
+
+$bg: $white;
+$text: #627175;
+
+// Responsive breakpoints
+$sizes: (
+  'sm': 600px,
+  'md': 960px,
+  'lg': 1280px
+);
+
+$layout-pad: 10px;
+$radius: 4px;
+
+// Z-indexes
+$zindex-0: 1;
+$zindex-1: 100;
+$zindex-2: 200;
+$zindex-3: 300;
+$zindex-4: 400;

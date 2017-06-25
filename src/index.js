@@ -1,11 +1,10 @@
-import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './components/App';
 
-import * as styles from './index.scss';
+import './sass/app.scss';
 
-const container = document.createElement('DIV');
-container.className = styles.app;
+const container = document.createElement('div');
+container.className = 'root';
 
 document.body.appendChild(container);
 
