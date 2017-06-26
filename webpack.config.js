@@ -46,7 +46,8 @@ module.exports = (env = {}) => {
                 options: {
                   importLoaders: 1,
                   modules: true,
-                  localIdentName: '[hash:base64:5]_local'
+                  minimize: isProd,
+                  localIdentName: '[hash:base64:5]_[local]'
                 }
               },
               {
