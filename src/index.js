@@ -1,7 +1,7 @@
 import ReactDOM from 'react-dom';
 import App from './components/App';
 
-import './sass/app.scss';
+import './styles/app.scss';
 
 const container = document.createElement('div');
 container.className = 'root';
