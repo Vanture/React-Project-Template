@@ -14,10 +14,6 @@ export default class App extends Component {
   render() {
     const { loaded } = this.state;
 
-    return (
-      <div className={styles.container}>
-        Hello World!
-      </div>
-    );
-  }  
+    return <div className={styles.container}>Hello World!</div>;
+  }
 }

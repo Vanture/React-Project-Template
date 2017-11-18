@@ -8,7 +8,4 @@ container.className = 'root';
 
 document.body.appendChild(container);
 
-ReactDOM.render(
-  <App />,
-  container
-);
+ReactDOM.render(<App />, container);
