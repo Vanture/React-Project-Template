@@ -1,10 +1,15 @@
 # My React Project Template
 
 [![Travis](https://img.shields.io/travis/hugmanrique/React-Project-Template.svg)](https://travis-ci.org/hugmanrique/React-Project-Template)
-[![Libraries](https://img.shields.io/librariesio/github/hugmanrique/React-Project-Template.svg)](https://libraries.io/github/hugmanrique/React-Project-Template)
 [![License](https://img.shields.io/github/license/hugmanrique/React-Project-Template.svg)](LICENSE)
 
-This is my personal project template for React apps, which I often use as a base for further configuration. The stack includes [Webpack](https://webpack.js.org/) 4, [Babel](https://babeljs.io/) 7, [SASS](http://sass-lang.com/), tests with [Jest](https://facebook.github.io/jest/) and, of course, [React](https://reactjs.org/).
+This is my personal project template for React apps, which I often use as a base for further configuration. The stack includes:
+
+- [Webpack](https://webpack.js.org/) 4 to create highly efficient (and fast) bundles.
+- [Babel](https://babeljs.io/) 7 to transpile [ES2015+](https://github.com/tc39/proposals/blob/master/finished-proposals.md) code to ES5.
+- [SASS](http://sass-lang.com/) to add power and elegance to CSS modules.
+- [Jest](https://facebook.github.io/jest/) to fastly test all your code.
+- Of course, [React](https://reactjs.org/).
 
 The template comes with a few common scripts I use, which I run with `npm run`.
 
