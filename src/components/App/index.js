@@ -1,28 +1,41 @@
-import { Component } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
+import classNames from 'classnames';
 
-import * as styles from './App.scss';
+import * as styles from './styles.scss';
 
-export default class App extends Component {
+export default class App extends React.Component {
+  static propTypes = {
+    dark: PropTypes.bool
+  };
+
+  static defaultProps = {
+    dark: false
+  };
+
   constructor(props) {
     super(props);
 
     this.state = {
-      loaded: false
+      dark: props.dark
     };
+
+    this.toggleLights = this.toggleLights.bind(this);
+  }
+
+  toggleLights() {
+    this.setState(prevState => ({ dark: !prevState.dark }));
   }
 
   render() {
-    const { loaded } = this.state;
+    const { dark } = this.state;
+    const appClass = classNames(styles.container, { [styles.dark]: dark });
 
     return (
-      <div className={styles.container}>
+      <div className={appClass}>
         Hello world!
-        <p>Loaded: {loaded ? 'yes' : 'no'}</p>
+        <button onClick={this.toggleLights}>Toggle lights</button>
       </div>
     );
-  }
-
-  componentDidMount() {
-    this.setState({ loaded: true });
   }
 }

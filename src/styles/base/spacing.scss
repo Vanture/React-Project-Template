@@ -1,0 +1,9 @@
+@function spacing($variant: 4) {
+  $value: map-get($spacing-data, $variant);
+
+  @if $value {
+    @return $value;
+  } @else {
+    @error 'Spacing `#{$variant}` not found';
+  }
+}

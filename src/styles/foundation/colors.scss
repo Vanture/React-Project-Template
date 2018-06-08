@@ -1,0 +1,26 @@
+$color-palette: (
+  primary: (
+    lightest: #E6E8FF,
+    lighter: #B2B7FF,
+    light: #7886D7,
+    base: #6574CD,
+    dark: #5661B3,
+    darker: #2F365F,
+    darkest: #191E38
+  ),
+  grey: (
+    lightest: #F8FAFC,
+    lighter: #F1F5F8,
+    light: #DAE1E7,
+    base: #b8c2cc,
+    dark: #8795a1,
+    darker: #606f7b,
+    darkest: #3d4852
+  ),
+  white: #fff,
+  black: #22292f
+);
+
+$bg-color: white;
+$light-color: white;
+$dark-color: grey, darkest;

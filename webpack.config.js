@@ -1,187 +1,129 @@
-'use strict';
-
 const webpack = require('webpack');
-const path = require('path');
-const autoprefixer = require('autoprefixer');
-
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 
-const BUILD_DIR = path.resolve(__dirname, 'build');
-const APP_DIR = path.resolve(__dirname, 'src');
+const paths = require('./config/paths');
 
-// Source maps are resource heavy and can cause out of memory issues for large files
-const sourceMaps = process.env.GENERATE_SOURCEMAP !== 'false';
+const env = process.env.WEBPACK_SERVE ? 'development' : process.env.NODE_ENV || 'production';
+const isProd = env === 'production';
+const shouldUseSourceMap = isProd;
 
-module.exports = ({ production, publicPath = '/' } = {}) => {
-  const isProd = production === true;
-  const generator = isProd ? generateProdConfig : generateDevConfig;
+const sassRegex = /\.(scss|sass)$/;
 
-  const nodeEnv = isProd ? 'production' : 'development';
-  const publicUrl = publicPath.slice(0, -1);
-
-  const config = {
-    context: APP_DIR,
-    entry: './index.js',
-    output: {
-      path: BUILD_DIR,
-      filename: '[name].js',
-      publicPath
-    },
-    devtool: sourceMaps
-      ? isProd ? 'cheap-module-source-map' : 'source-map'
-      : false,
-    module: {
-      rules: [
-        {
-          test: /\.js$/,
-          loader: 'babel-loader',
-          exclude: /node_modules/,
-          options: {
-            // Cache babel results in ./node_modules/.cache/babel-loader
-            cacheDirectory: !isProd,
-            compact: isProd
+module.exports = {
+  mode: isProd ? 'production' : 'development',
+  entry: paths.appIndexJs,
+  // Don't continue if there are any errors
+  bail: isProd,
+  devtool: shouldUseSourceMap ? 'source-map' : 'cheap-module-source-map',
+  output: {
+    path: paths.appBuild
+  },
+  optimization: isProd
+    ? {
+        minimizer: [
+          new UglifyJsPlugin({
+            uglifyOptions: {
+              compress: {
+                comparisons: false
+              },
+              mangle: {
+                safari10: true
+              },
+              output: {
+                ascii_only: true
+              }
+            },
+            parallel: true,
+            cache: true,
+            sourceMap: shouldUseSourceMap
+          }),
+          new OptimizeCSSAssetsPlugin()
+        ],
+        splitChunks: {
+          chunks: 'all',
+          name: 'vendors',
+          cacheGroups: {
+            // Extract all CSS in a single file
+            // https://webpack.js.org/plugins/mini-css-extract-plugin/#extracting-all-css-in-a-single-file
+            styles: {
+              name: 'styles',
+              test: sassRegex,
+              chunks: 'all',
+              enforce: true
+            }
           }
         },
-        {
-          test: /\.scss$/,
-          loader: ExtractTextPlugin.extract(getCssConfig(isProd))
-        },
-        {
-          test: /\.(png|jpg|gif|svg|eot|ttf|woff|woff2)$/,
-          use: [
-            {
-              loader: 'file-loader',
-              options: {
-                name: '[sha512:hash:base64:7]-[name].[ext]'
-              }
-            }
-          ]
-        }
-      ]
-    },
-    plugins: [
-      new webpack.DefinePlugin({
-        'process.env.NODE_ENV': JSON.stringify(nodeEnv),
-        'process.env.PUBLIC_URL': JSON.stringify(publicUrl)
-      }),
-      new HtmlWebpackPlugin({
-        template: path.resolve(APP_DIR, 'template.ejs'),
-        publicUrl,
-        minify: isProd
-          ? {
-              removeComments: true,
-              collapseWhitespace: true,
-              removeRedundantAttributes: true,
-              useShortDoctype: true,
-              removeEmptyAttributes: true,
-              removeStyleLinkTypeAttributes: true,
-              keepClosingSlash: true,
-              minifyJS: true,
-              minifyCSS: true,
-              minifyURLs: true
-            }
-          : false
-      }),
-      new ExtractTextPlugin({
-        filename: 'styles.css',
-        allChunks: true,
-        disable: !isProd
-      })
-    ]
-  };
-
-  return generator(config);
-};
-
-function generateProdConfig(config) {
-  // Don't continue if there are any errors
-  config.bail = true;
-
-  config.plugins.push(
-    new webpack.optimize.UglifyJsPlugin({
-      mangle: true,
-      compress: {
-        warnings: false,
-        comparisons: false,
-        screw_ie8: true
-      },
-      mangle: {
-        safari10: true
-      },
-      output: {
-        comments: false,
-        // Emoji and regex is not minified properly
-        ascii_only: true
-      },
-      sourceMap: sourceMaps
-    }),
-    new webpack.optimize.OccurrenceOrderPlugin()
-  );
-
-  return config;
-}
-
-function generateDevConfig(config) {
-  config.plugins.push(
-    // Add module names to factory functions so they appear in the browser profiler
-    new webpack.NamedModulesPlugin(),
-    // Emit hot updates (currently CSS only)
-    new webpack.HotModuleReplacementPlugin()
-  );
-
-  // Turn off performance hints during development because
-  // we don't do code splitting or minification
-  config.performance = {
-    hints: false
-  };
-
-  return config;
-}
-
-function getCssConfig(isProd) {
-  const base = {
-    fallback: 'style-loader',
-    use: [
-      {
-        loader: 'css-loader',
-        options: {
-          importLoaders: 1,
-          modules: true,
-          minimize: isProd,
-          localIdentName: '[hash:base64:5]_[local]'
-        }
-      },
-      {
-        loader: 'fast-sass-loader',
-        options: {
-          includePaths: [path.resolve(APP_DIR, 'styles')]
-        }
+        // Keep the runtime chunk seperated to enable long term caching
+        runtimeChunk: true
       }
-    ]
-  };
-
-  if (isProd) {
-    base.use.push({
-      loader: 'postcss-loader',
-      options: {
-        // Necessary for external CSS imports to work
-        ident: 'postcss',
-        plugins: () => [
-          require('postcss-flexbugs-fixes'),
-          autoprefixer({
-            browsers: [
-              '>1%',
-              'last 4 versions',
-              'Firefox ESR',
-              'not ie < 9' // React doesn't support IE8
-            ],
-            flexbox: 'no-2009'
-          })
+    : {},
+  module: {
+    rules: [
+      {
+        test: /\.js$/,
+        include: paths.appSrc,
+        exclude: /node_modules/,
+        use: ['thread-loader', 'babel-loader']
+      },
+      {
+        test: sassRegex,
+        exclude: /node_modules/,
+        use: [
+          isProd ? MiniCssExtractPlugin.loader : 'style-loader',
+          {
+            loader: 'css-loader',
+            options: {
+              importLoaders: 1,
+              modules: true,
+              minimize: isProd,
+              localIdentName: `[hash:5]${isProd ? '' : '_[local]'}`
+            }
+          },
+          {
+            loader: 'fast-sass-loader',
+            options: {
+              includePaths: [paths.appStyles]
+            }
+          }
         ]
+      },
+      {
+        test: /\.(png|jpg|gif|svg|eot|ttf|woff|woff2)$/,
+        use: {
+          loader: 'file-loader',
+          options: {
+            name: `[name]${isProd ? '.[hash:8]' : ''}.[ext]`,
+            outputPath: paths.assetOutput
+          }
+        }
       }
-    });
-  }
-
-  return base;
-}
+    ]
+  },
+  plugins: [
+    isProd && new webpack.optimize.ModuleConcatenationPlugin(),
+    // Generates an `index.html` file with the <script> injected.
+    new HtmlWebpackPlugin({
+      template: paths.appHtml,
+      minify: isProd && {
+        removeComments: true,
+        collapseWhitespace: true,
+        removeRedundantAttributes: true,
+        useShortDoctype: true,
+        removeEmptyAttributes: true,
+        removeStyleLinkTypeAttributes: true,
+        keepClosingSlash: true,
+        minifyJS: true,
+        minifyCSS: true,
+        minifyURLs: true
+      }
+    }),
+    // Makes the NODE_ENV variable available to the JS code
+    new webpack.DefinePlugin({
+      'process.env.NODE_ENV': JSON.stringify(env)
+    }),
+    isProd && new MiniCssExtractPlugin()
+  ].filter(Boolean)
+};

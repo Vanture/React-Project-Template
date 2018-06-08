@@ -1,7 +1,9 @@
-@import '_variables';
+@import 'foundation';
 
-:global {
-  @import '_base';
+body {
+  padding: spacing(4);
+  background-color: color($bg-color);
 }
 
-@import '_fonts';
+// Place "Roboto-Regular.(ttf|woff|woff2)" under fonts/
+// @include generate-font-face('Roboto-Regular', normal, 'Roboto');

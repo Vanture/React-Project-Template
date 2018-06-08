@@ -1,0 +1,19 @@
+@function color($hue, $value: base) {
+  // $hue = ($hue, $value)
+  @if type-of($hue) == list {
+    $value: nth($hue, 2);
+    $hue: nth($hue, 1);
+  }
+
+  $color: map-get($color-palette, $hue);
+
+  @if type-of($color) == map {
+    $color: map-get($color, $value);
+  }
+
+  @if type-of($color) == color {
+    @return $color;
+  } @else {
+    @error 'Color `#{$hue} - #{$value}` not found';
+  }
+}
